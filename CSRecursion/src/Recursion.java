@@ -57,10 +57,18 @@ public class Recursion extends JPanel
 		Graphics2D g2 = (Graphics2D) g;
 		g.drawString("Seed: " + seed, 0, 100);
 		r = new Random(seed);
-		//branch2(initialBranchHeight, g2, centerX, centerY, gau(treeLean, angleIncrease/10));
-		//clover(g2, 300,0,0);
-		squares(g2, 100, screenWidth/2, screenHeight/2);
-
+		
+		circles(g2, 100,300,300,0);
+		
+		//DONE
+		//SNOWFLAKE
+		//branch2(500, g2, centerX, centerY,0);
+		//TREE
+		//branch(300, g2, centerX, centerY, 0, 1);
+		//CIRCLE THING
+		//clover(g2, 300,0,0);	
+		//SQUARE THING
+		//squares(g2, 300, screenWidth/2 - 150, screenHeight/2 - 150);
 	}
 
 	public void update() {
@@ -73,10 +81,24 @@ public class Recursion extends JPanel
 		s1.setVisible(true);
 
 	}
+	
+	public void circles(Graphics2D g, double w, int centerX, int centerY, double a) {
+		if(a != 0) g.drawOval((int) (centerX - w), (int) (centerY-w), (int)w*2, (int)w*2);
+		g.drawOval((int) (300 - w * a/Math.PI), (int) (300 - w * a/Math.PI), (int)w*2, (int)w*2);
+		a += Math.PI/24;
+		if(a < Math.PI*2){
+			circles(g,w, 300 + (int)(100*Math.sin(a)), 300 + (int) (100 * Math.cos(a)), a);
+		}
+		
+		
+		
+	}
+	
+	
 
 	public void branch(double len, Graphics2D g2, int centerX, int centerY, double a, float thickness) {
 		drawLine(centerX, centerY, len, a, g2, thickness);
-		g2.drawOval((int) (centerX - len), (int) (centerY-len), (int)len*2, (int)len*2);
+		//g2.drawOval((int) (centerX - len), (int) (centerY-len), (int)len*2, (int)len*2);
 		if (len >= lineLengthLimit) {
 			for (int i = 0; i < 2; i++) {
 				branch(len * .6, g2, (int) (centerX + len * Math.sin(a)),
@@ -102,31 +124,30 @@ public class Recursion extends JPanel
 	}
 	
 	public void branch2(double len, Graphics2D g2, int centerX, int centerY, double a) {
-		drawLine(centerX, centerY, len, a, g2, 2);
+		if(a != 0) drawLine(centerX, centerY, len, a, g2, 1);
 		if (len >= lineLengthLimit) {
+			for(int i = 0; i < 5; i++){
 				branch2(len * .4, g2, (int) (centerX + len * Math.sin(a)),
-						(int) (centerY - (len * Math.cos(a))), a + Math.PI/4);
-				//branch2(len * .4, g2, (int) (centerX + len * Math.sin(a)),
-				//		(int) (centerY - (len * Math.cos(a))), a + Math.PI/2);
-				branch2(len * .4, g2, (int) (centerX + len * Math.sin(a)),
-						(int) (centerY - (len * Math.cos(a))), a + Math.PI*3/4);
-				branch2(len * .4, g2, (int) (centerX + len * Math.sin(a)),
-						(int) (centerY - (len * Math.cos(a))), a - Math.PI/4);
-				//branch2(len * .4, g2, (int) (centerX + len * Math.sin(a)),
-				//		(int) (centerY - (len * Math.cos(a))), a - Math.PI/2);
-				branch2(len * .4, g2, (int) (centerX + len * Math.sin(a)),
-						(int) (centerY - (len * Math.cos(a))), a - Math.PI*3/4);
+						(int) (centerY - (len * Math.cos(a))), a + Math.toRadians(72*(i+1)));
+			}
+			
 			
 		}
 	}
 	
 	public void squares(Graphics g2, int w, int x, int y) {
-		g2.drawRect(x - w/2, y - w/2, w, w);
-		double dec = .6666666666;
-		
+		g2.drawRect(x,y,w,w);
+			
 		if(w > 10) {
-			squares(g2, (int)(w - w*dec), (int)(x + w*dec + w*dec/2 + w/2), (int)(y - w*dec*2 -  w/2));
-			squares(g2, (int)(w - w*dec), (int)(x - w*dec  - w*dec/2 - w/2), (int)(y - w*dec*2 -  w/2));
+			squares(g2, w/4,x-w*2/4,y-2*w/4);
+			squares(g2, w/4, x-w*2/4, y+w*3/8);
+			squares(g2, w/4, x-w*2/4, y+w*5/4);
+			squares(g2, w/4,x+w*3/8,y-2*w/4);
+			
+			squares(g2, w/4,x+w*3/8,y+5*w/4);
+			squares(g2, w/4,x+w*5/4,y-2*w/4);
+			squares(g2, w/4, x+w*5/4, y+w*3/8);
+			squares(g2, w/4, x+w*5/4, y+w*5/4);
 			
 			//squares(g2, (int)(w - w*dec), (int)(x + w*dec*2 + w/2), (int)(y + w*dec*2 +  w/2));
 			//squares(g2, (int)(w - w*dec), (int)(x - w*dec*2 - w/2), (int)(y + w*dec*2 +  w/2));
